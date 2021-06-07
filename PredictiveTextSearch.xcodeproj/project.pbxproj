@@ -8,12 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		8E49925E266E3DA300E5BDBF /* PredictiveTextSearch.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E49925C266E3DA300E5BDBF /* PredictiveTextSearch.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E49927E266E6BBF00E5BDBF /* PredictiveText.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E49927C266E6BBF00E5BDBF /* PredictiveText.m */; };
+		8E49927F266E6BBF00E5BDBF /* PredictiveText.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E49927D266E6BBF00E5BDBF /* PredictiveText.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		8E499259266E3DA300E5BDBF /* PredictiveTextSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PredictiveTextSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E49925C266E3DA300E5BDBF /* PredictiveTextSearch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PredictiveTextSearch.h; sourceTree = "<group>"; };
 		8E49925D266E3DA300E5BDBF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8E49927C266E6BBF00E5BDBF /* PredictiveText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PredictiveText.m; sourceTree = "<group>"; };
+		8E49927D266E6BBF00E5BDBF /* PredictiveText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PredictiveText.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,10 +50,20 @@
 		8E49925B266E3DA300E5BDBF /* PredictiveTextSearch */ = {
 			isa = PBXGroup;
 			children = (
+				8E49927B266E6BBF00E5BDBF /* PredictiveTextClasses */,
 				8E49925C266E3DA300E5BDBF /* PredictiveTextSearch.h */,
 				8E49925D266E3DA300E5BDBF /* Info.plist */,
 			);
 			path = PredictiveTextSearch;
+			sourceTree = "<group>";
+		};
+		8E49927B266E6BBF00E5BDBF /* PredictiveTextClasses */ = {
+			isa = PBXGroup;
+			children = (
+				8E49927C266E6BBF00E5BDBF /* PredictiveText.m */,
+				8E49927D266E6BBF00E5BDBF /* PredictiveText.h */,
+			);
+			path = PredictiveTextClasses;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -59,6 +73,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E49927F266E6BBF00E5BDBF /* PredictiveText.h in Headers */,
 				8E49925E266E3DA300E5BDBF /* PredictiveTextSearch.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -130,6 +145,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E49927E266E6BBF00E5BDBF /* PredictiveText.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
