@@ -23,6 +23,7 @@
 {
     if ([super init])
     {
+        NSLog(@"test");
         self.language = language;
         self.dictionary = dictionary;
         
@@ -44,7 +45,7 @@
     NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     
     NSString* documentsDirectory = [paths objectAtIndex:0];
-    NSString* filePredictDictionary = [documentsDirectory stringByAppendingPathComponent:@"predict_dictionary_en.txt"];
+    NSString* filePredictDictionary = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"predict_dictionary_%@.txt", self.language]];
     
     NSFileManager* fileManager = [NSFileManager defaultManager];
     
@@ -55,9 +56,18 @@
     }
     else
     {
+        NSLog(@"no file with predictive words");
         self.predictiveDictionary = [[NSMutableDictionary alloc] init];
     }
+}
 
+-(void)savePredictDictionary
+{
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString* documentsDirectory = [paths objectAtIndex:0];
+    NSString* fileWordsName = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"predict_dictionary_%@.txt", self.language]];
+    
+    [self.predictiveDictionary writeToFile:fileWordsName atomically:YES];
 }
 
 -(NSDictionary<NSNumber*, NSArray<NSString*>*>*)activeSet
@@ -96,6 +106,7 @@
         
         [words filterUsingPredicate:filterWords];
     }
+    //if words is empty check for near words
     
     if ([self.predictiveDictionary count] != 0)
     {
@@ -112,11 +123,11 @@
     
     for (int i = 0; i < words.count; ++i)
     {
-        if ([self.predictiveDictionary objectForKey:words[i]])
+        if ([self.predictiveDictionary objectForKey:words[i]] != nil)
         {
             [wordsPredict addObject:words[i]];
-            [words removeObject:words[i]];
             [wordsPredictOrderNumber addObject: [self.predictiveDictionary objectForKey:words[i]]];
+            [words removeObject:words[i]];
         }
     }
     
@@ -145,11 +156,11 @@
 {
     if ([self.predictiveDictionary objectForKey:word] != nil)
     {
-        NSNumber* numberOfRepeatability = [self.predictiveDictionary objectForKey:word];
+        int numberOfRepeatability = [self.predictiveDictionary objectForKey:word].intValue + 1;
         [self.predictiveDictionary removeObjectForKey:word];
-        [self.predictiveDictionary setValue:numberOfRepeatability forKey:word];
-
-    } else
+        [self.predictiveDictionary setValue:[NSNumber numberWithInt:numberOfRepeatability] forKey:word];
+    }
+    else
     {
         [self.predictiveDictionary setValue:[NSNumber numberWithInt:1] forKey:word];
     }
