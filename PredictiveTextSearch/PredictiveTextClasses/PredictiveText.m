@@ -9,24 +9,21 @@
 
 @interface PredictiveText ()
 
+@property (strong, nonatomic) NSString* language;
 @property (strong, nonatomic) NSDictionary<NSString*, NSString*>* dictionary;
 @property (strong, nonatomic) NSDictionary<NSNumber*, NSArray<NSString*>*>* enWordsSet;
 @property (strong, nonatomic) NSDictionary<NSNumber*, NSArray<NSString*>*>* bgWordsSet;
-@property (strong, nonatomic) NSMutableArray<NSString*>* combinations;
 @property (strong, nonatomic) NSMutableDictionary<NSString*, NSNumber*>* predictiveDictionary;
-
-//@property (assign) int count;
-//@property (strong, nonatomic) NSArray<NSString*>* words;
 
 @end
 
 @implementation PredictiveText
 
--(instancetype)initWithDictionary:(NSDictionary<NSString*, NSString*>*)dictionary
+-(instancetype)initWithDictionary:(NSDictionary<NSString*, NSString*>*)dictionary andLanguage:(NSString*)language
 {
     if ([super init])
     {
-        NSLog(@"test");
+        self.language = language;
         self.dictionary = dictionary;
         
         self.enWordsSet = @{@2: @[@"A", @"B", @"C"], @3: @[@"D", @"E", @"F"], @4: @[@"G", @"H", @"I"], @5: @[@"J", @"K", @"L"],
@@ -35,11 +32,6 @@
         self.bgWordsSet = @{@3: @[@"А", @"Б", @"В", @"Г"], @4: @[@"Д", @"Е", @"Ж", @"З"], @5: @[@"М", @"Н", @"О", @"П"],
                             @6: @[@"Р", @"С", @"Т", @"У"], @7: @[@"Ф", @"Х", @"Ц", @"Ч"], @8: @[@"Ш", @"Щ", @"Ъ"],
                             @9: @[@"ьо", @"Ю", @"Я"]};
-        
-        self.combinations = [[NSMutableArray alloc] init];
-        
-//        self.count = 0;
-//        self.words = [[NSArray alloc] init];
         
         [self loadPredictDictionary];
     }
@@ -68,191 +60,85 @@
 
 }
 
-/*-(NSArray<NSString*>*)predictWordsStartedWith:(NSString*)stringInput
+-(NSDictionary<NSNumber*, NSArray<NSString*>*>*)activeSet
 {
-    if (stringInput.length == 1)
+    if ([self.language isEqualToString:@"en"])
     {
-        self.count = 0;
+        return self.enWordsSet;
     }
     
-    //get last number - make combination - filter
-    int number = [stringInput intValue] % 10; //get last number
-    //self.combinations = [self makeNewCombinationsWithNumber:@(number)];
-    
-    //search words with this combinations
-    [self wordsWithCombinations:@(number)];
-    
-    //search in predictiveDictionary
-    if ([self.predictiveDictionary count] != 0)
-    {
-        return [self changeOrderOfWords];
-    }
-    
-    return self.words;
+    return self.bgWordsSet;
 }
 
--(void)wordsWithCombinations:(NSNumber*)number
-{
-    NSArray<NSString*>* lettersOnNumber = [self.enWordsSet objectForKey:number]; //TODO: current language
-    
-    if (self.count == 0)
-    {
-        NSArray<NSString*>* nextLetters = [self.enWordsSet objectForKey:[NSNumber numberWithInt:number.intValue + 1]];
-        [self allWordsWithLetters:lettersOnNumber andNextLetter:nextLetters.firstObject];
-        self.count += 1;
-    }
-    
-    NSMutableArray<NSString*>* newWords = [[NSMutableArray alloc] init];
-    
-    for (NSString* word in self.words)
-    {
-        if ([lettersOnNumber containsObject:[word substringWithRange:NSMakeRange(self.count, 1)]])
-        {
-            [newWords addObject:word];
-        }
-    }
-    
-    self.count += 1;
-    
-    self.words = newWords;
-}
-
--(void)allWordsWithLetters:(NSArray<NSString*>*)letters andNextLetter:(NSString*)nextLetter
-{
-    NSArray<NSString*>* sortedWords = [[self.dictionary allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-    
-    NSUInteger len = [sortedWords indexOfObject:nextLetter] - [sortedWords indexOfObject:letters.firstObject];
-    self.words = [sortedWords subarrayWithRange:NSMakeRange([sortedWords indexOfObject:letters.firstObject], len)];
-}
-
--(NSArray<NSString*>*)changeOrderOfWords
-{
-    NSMutableArray<NSString*>* wordsCopy = [[NSMutableArray alloc] initWithArray:self.words];
-    NSMutableArray<NSString*>* words = [[NSMutableArray alloc] init];
-    NSMutableArray<NSNumber*>* wordsOrderNumber = [[NSMutableArray alloc] init];
-    
-    for (int i = 0; i < wordsCopy.count; ++i)
-    {
-        if ([self.predictiveDictionary objectForKey:wordsCopy[i]])
-        {
-            [words addObject:wordsCopy[i]];
-            [wordsCopy removeObject:wordsCopy[i]];
-            [wordsOrderNumber addObject: [self.predictiveDictionary objectForKey:wordsCopy[i]]];
-        }
-    }
-    
-    if (wordsOrderNumber.count != 0)
-    {
-        for (int i = 0; i < wordsOrderNumber.count - 1; ++i)
-        {
-            for (int j = 0; j < wordsOrderNumber.count - i - 1; ++j)
-            {
-                if (wordsOrderNumber[j] < wordsOrderNumber[j + 1])
-                {
-                    [words exchangeObjectAtIndex:j withObjectAtIndex:j + 1];
-                    [wordsOrderNumber exchangeObjectAtIndex:j withObjectAtIndex:j + 1];
-                }
-            }
-        }
-    }
-    NSMutableArray<NSString*>* commonWords = [[NSMutableArray alloc] init];
-    [commonWords addObjectsFromArray:words];
-    [commonWords addObjectsFromArray:wordsCopy];
-    
-    return commonWords;
-}*/
-
-
-//if count = 0 - get all words with letter of number - if count is not
 -(NSArray<NSString*>*)predictWordsStartedWith:(NSString*)stringInput
 {
-    //get last number - make combination - filter
-    int number = [stringInput intValue] % 10; //get last number
-    self.combinations = [self makeNewCombinationsWithNumber:@(number)];
+    NSMutableArray<NSString*>* words = [NSMutableArray arrayWithArray:[self.dictionary allKeys]];
     
-    //search words with this combinations
-    NSMutableArray<NSString*>* wordsFromCombinations = [self searchWordInDictionaryWithCombinations];
-    
-    //search in predictiveDictionary
-    if ([self.predictiveDictionary count] != 0)
+    for (int i = 0; i < stringInput.length; ++i)
     {
-        wordsFromCombinations = [self changeOrderOfWords:wordsFromCombinations];
+        NSNumber* number = [NSNumber numberWithInt:[[stringInput substringWithRange:NSMakeRange(i, 1)] intValue]];
+        NSArray<NSString*>* letters = [self.activeSet objectForKey: number];
+        
+        NSPredicate* filterWords = [NSPredicate predicateWithBlock:^BOOL(NSString* evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+            if (evaluatedObject.length - 1 < i)
+            {
+                return NO;
+            }
+            NSString* character = [NSString stringWithFormat:@"%c", [evaluatedObject characterAtIndex:i]];
+            
+            if ([letters containsObject:character] && stringInput.length == evaluatedObject.length)
+            {
+                return YES;
+            }
+            
+            return NO;
+        }];
+        
+        [words filterUsingPredicate:filterWords];
     }
     
-    return wordsFromCombinations;
+    if ([self.predictiveDictionary count] != 0)
+    {
+        return [self changeOrderOfWords:words];
+    }
+    
+    return words;
 }
 
--(NSMutableArray<NSString*>*)changeOrderOfWords:(NSMutableArray<NSString*>*)wordsFromCombinations
+-(NSArray<NSString*>*)changeOrderOfWords:(NSMutableArray<NSString*>*)words
 {
-    NSMutableArray<NSString*>* words = [[NSMutableArray alloc] init];
-    NSMutableArray<NSNumber*>* wordsOrderNumber = [[NSMutableArray alloc] init];
+    NSMutableArray<NSString*>* wordsPredict = [[NSMutableArray alloc] init];
+    NSMutableArray<NSNumber*>* wordsPredictOrderNumber = [[NSMutableArray alloc] init];
     
-    for (int i = 0; i < wordsFromCombinations.count; ++i)
+    for (int i = 0; i < words.count; ++i)
     {
-        if ([self.predictiveDictionary objectForKey:wordsFromCombinations[i]])
+        if ([self.predictiveDictionary objectForKey:words[i]])
         {
-            [words addObject:wordsFromCombinations[i]];
-            [wordsFromCombinations removeObject:wordsFromCombinations[i]];
-            [wordsOrderNumber addObject: [self.predictiveDictionary objectForKey:wordsFromCombinations[i]]];
+            [wordsPredict addObject:words[i]];
+            [words removeObject:words[i]];
+            [wordsPredictOrderNumber addObject: [self.predictiveDictionary objectForKey:words[i]]];
         }
     }
     
-    if (wordsOrderNumber.count != 0)
+    if (wordsPredictOrderNumber.count != 0)
     {
-        for (int i = 0; i < wordsOrderNumber.count - 1; ++i)
+        for (int i = 0; i < wordsPredictOrderNumber.count - 1; ++i)
         {
-            for (int j = 0; j < wordsOrderNumber.count - i - 1; ++j)
+            for (int j = 0; j < wordsPredictOrderNumber.count - i - 1; ++j)
             {
-                if (wordsOrderNumber[j] < wordsOrderNumber[j + 1])
+                if (wordsPredictOrderNumber[j] < wordsPredictOrderNumber[j + 1])
                 {
-                    [words exchangeObjectAtIndex:j withObjectAtIndex:j + 1];
-                    [wordsOrderNumber exchangeObjectAtIndex:j withObjectAtIndex:j + 1];
+                    [wordsPredict exchangeObjectAtIndex:j withObjectAtIndex:j + 1];
+                    [wordsPredictOrderNumber exchangeObjectAtIndex:j withObjectAtIndex:j + 1];
                 }
             }
         }
     }
     NSMutableArray<NSString*>* commonWords = [[NSMutableArray alloc] init];
+    [commonWords addObjectsFromArray:wordsPredict];
     [commonWords addObjectsFromArray:words];
-    [commonWords addObjectsFromArray:wordsFromCombinations];
     
     return commonWords;
-}
-
--(NSMutableArray<NSString*>*)searchWordInDictionaryWithCombinations
-{
-    NSMutableArray<NSString*>* wordsFromCombinations = [[NSMutableArray alloc] init];
-    
-    for (NSString* key in self.dictionary)
-    {
-        if ([self.combinations containsObject:key])
-        {
-            [wordsFromCombinations addObject:key];
-        }
-    }
-    
-    return wordsFromCombinations;
-}
-
--(NSMutableArray<NSString*>*)makeNewCombinationsWithNumber:(NSNumber*)number
-{
-    NSArray<NSString*>* lettersOnNumber = [self.enWordsSet objectForKey:number]; //TODO: current language
-    NSMutableArray<NSString*>* newCombinations = [[NSMutableArray alloc] init];
-    
-    if (self.combinations.count == 0)
-    {
-        return [NSMutableArray arrayWithArray:lettersOnNumber];
-    }
-    
-    for (int i = 0; i < self.combinations.count; ++i)
-    {
-        for (int j = 0; j < lettersOnNumber.count; ++j)
-        {
-            NSString* combination = [self.combinations[i] stringByAppendingString:lettersOnNumber[j]];
-            [newCombinations addObject:combination];
-        }
-    }
-    
-    return newCombinations;
 }
 
 -(NSString*)descriptionOfWord:(NSString*)word

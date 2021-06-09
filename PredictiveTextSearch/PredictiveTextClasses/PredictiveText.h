@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PredictiveText : NSObject
 
--(instancetype)initWithDictionary:(NSDictionary<NSString*, NSString*>*)dictionary;
+-(instancetype)initWithDictionary:(NSDictionary<NSString*, NSString*>*)dictionary andLanguage:(NSString*)language;
 
 -(NSArray<NSString*>*)predictWordsStartedWith:(NSNumber*)number;
 
