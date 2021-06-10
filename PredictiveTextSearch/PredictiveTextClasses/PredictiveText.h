@@ -13,9 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(instancetype)initWithDictionary:(NSDictionary<NSString*, NSString*>*)dictionary andLanguage:(NSString*)language;
 
--(NSArray<NSString*>*)predictWordsStartedWith:(NSNumber*)number;
+-(void)savePredictDictionary;
 
--(NSString*)descriptionOfWord:(NSString*)word;
+-(NSArray<NSString*>*)predictWordsStartedWith:(NSString*)number;
+
+-(void)chooseWord:(NSString*)word;
 
 @end
 

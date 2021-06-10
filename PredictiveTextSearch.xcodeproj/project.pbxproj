@@ -9,7 +9,9 @@
 /* Begin PBXBuildFile section */
 		8E49925E266E3DA300E5BDBF /* PredictiveTextSearch.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E49925C266E3DA300E5BDBF /* PredictiveTextSearch.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E49927E266E6BBF00E5BDBF /* PredictiveText.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E49927C266E6BBF00E5BDBF /* PredictiveText.m */; };
-		8E49927F266E6BBF00E5BDBF /* PredictiveText.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E49927D266E6BBF00E5BDBF /* PredictiveText.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E49927F266E6BBF00E5BDBF /* PredictiveText.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E49927D266E6BBF00E5BDBF /* PredictiveText.h */; };
+		8E4992C22670EF6F00E5BDBF /* KeypadSearchBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E4992C02670EF6F00E5BDBF /* KeypadSearchBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E4992C32670EF6F00E5BDBF /* KeypadSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E4992C12670EF6F00E5BDBF /* KeypadSearchBar.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,6 +20,8 @@
 		8E49925D266E3DA300E5BDBF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E49927C266E6BBF00E5BDBF /* PredictiveText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PredictiveText.m; sourceTree = "<group>"; };
 		8E49927D266E6BBF00E5BDBF /* PredictiveText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PredictiveText.h; sourceTree = "<group>"; };
+		8E4992C02670EF6F00E5BDBF /* KeypadSearchBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeypadSearchBar.h; sourceTree = "<group>"; };
+		8E4992C12670EF6F00E5BDBF /* KeypadSearchBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeypadSearchBar.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +54,7 @@
 		8E49925B266E3DA300E5BDBF /* PredictiveTextSearch */ = {
 			isa = PBXGroup;
 			children = (
+				8E4992B62670EB3C00E5BDBF /* SearchBarBehaviorClasses */,
 				8E49927B266E6BBF00E5BDBF /* PredictiveTextClasses */,
 				8E49925C266E3DA300E5BDBF /* PredictiveTextSearch.h */,
 				8E49925D266E3DA300E5BDBF /* Info.plist */,
@@ -66,6 +71,15 @@
 			path = PredictiveTextClasses;
 			sourceTree = "<group>";
 		};
+		8E4992B62670EB3C00E5BDBF /* SearchBarBehaviorClasses */ = {
+			isa = PBXGroup;
+			children = (
+				8E4992C02670EF6F00E5BDBF /* KeypadSearchBar.h */,
+				8E4992C12670EF6F00E5BDBF /* KeypadSearchBar.m */,
+			);
+			path = SearchBarBehaviorClasses;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -73,6 +87,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E4992C22670EF6F00E5BDBF /* KeypadSearchBar.h in Headers */,
 				8E49927F266E6BBF00E5BDBF /* PredictiveText.h in Headers */,
 				8E49925E266E3DA300E5BDBF /* PredictiveTextSearch.h in Headers */,
 			);
@@ -146,6 +161,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8E49927E266E6BBF00E5BDBF /* PredictiveText.m in Sources */,
+				8E4992C32670EF6F00E5BDBF /* KeypadSearchBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

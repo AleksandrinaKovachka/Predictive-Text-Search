@@ -152,7 +152,7 @@
     return commonWords;
 }
 
--(NSString*)descriptionOfWord:(NSString*)word
+-(void)chooseWord:(NSString*)word;
 {
     if ([self.predictiveDictionary objectForKey:word] != nil)
     {
@@ -164,8 +164,6 @@
     {
         [self.predictiveDictionary setValue:[NSNumber numberWithInt:1] forKey:word];
     }
-    
-    return self.dictionary[word];
 }
 
 @end
