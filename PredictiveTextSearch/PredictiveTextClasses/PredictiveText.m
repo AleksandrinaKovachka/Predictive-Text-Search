@@ -24,7 +24,6 @@
 {
     if ([super init])
     {
-        NSLog(@"test");
         self.language = language;
         self.dictionary = dictionary;
         
@@ -65,7 +64,6 @@
     }
     else
     {
-        NSLog(@"no file with predictive words");
         self.predictiveDictionary = [[NSMutableDictionary alloc] init];
     }
 }
@@ -195,6 +193,30 @@
     {
         [self.predictiveDictionary setValue:[NSNumber numberWithInt:1] forKey:word];
     }
+    
+    [self savePredictDictionary];
+}
+
+-(NSString*)getSymbolWith:(NSString*)lastPresented
+{
+    if ([self.lettersNumber objectForKey:lastPresented]) //if is letter
+    {
+        NSNumber* number = [NSNumber numberWithInt:[[self.lettersNumber objectForKey:lastPresented] intValue]];
+        NSArray<NSString*>* letters = [[self activeSet] objectForKey:number];
+        
+        NSUInteger index = [letters indexOfObject:lastPresented];
+        
+        if (letters.count - 1 == index)
+        {
+            return letters[0];
+        }
+        else
+        {
+            return letters[index + 1];
+        }
+    }
+    NSArray<NSString*>* letters = [[self activeSet] objectForKey:[NSNumber numberWithInt:[lastPresented intValue]]];
+    return letters[0];
 }
 
 @end

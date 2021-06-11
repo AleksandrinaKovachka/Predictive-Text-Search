@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void)didSuggestedWordsChangeTo:(NSArray<NSString*>*)words;
 
+-(void)didNumbersChangeTo:(NSString*)word;
+
 @end
 
 
@@ -29,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void)initializePredictiveTextWithDictionary:(NSDictionary<NSString*, NSString*>*)dictionary andLanguage:(NSString*)language;
 -(void)isPredictiveText:(BOOL)state;
+-(void)isMultiTap:(BOOL)state;
 
 @end
 

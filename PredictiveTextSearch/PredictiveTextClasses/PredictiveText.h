@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void)chooseWord:(NSString*)word;
 
+-(NSString*)getSymbolWith:(NSString*)lastPresented;
+
 @end
 
 NS_ASSUME_NONNULL_END
