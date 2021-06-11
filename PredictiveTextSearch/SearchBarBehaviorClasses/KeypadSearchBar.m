@@ -13,6 +13,7 @@
 @property (strong, nonatomic) PredictiveText* predictiveText;
 @property (assign) BOOL isPredictive;
 
+
 @end
 
 @implementation KeypadSearchBar
@@ -34,6 +35,9 @@
     if (self.isPredictive)
     {
         NSArray<NSString*>* words = [self.predictiveText predictWordsStartedWith:searchText];
+
+        self.text = words.firstObject;
+
         [self.suggestedWordsDelegate didSuggestedWordsChangeTo:words];
     }
     else
@@ -58,6 +62,15 @@
 -(void)isPredictiveText:(BOOL)state
 {
     self.isPredictive = state;
+    
+    if (state)
+    {
+        self.keyboardType = UIKeyboardTypeNumberPad;
+    }
+    else
+    {
+        self.keyboardType = UIKeyboardTypeDefault;
+    }
 }
 
 -(void)didChooseWord:(NSString*)word

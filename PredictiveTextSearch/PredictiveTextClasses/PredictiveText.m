@@ -13,6 +13,7 @@
 @property (strong, nonatomic) NSDictionary<NSString*, NSString*>* dictionary;
 @property (strong, nonatomic) NSDictionary<NSNumber*, NSArray<NSString*>*>* enWordsSet;
 @property (strong, nonatomic) NSDictionary<NSNumber*, NSArray<NSString*>*>* bgWordsSet;
+@property (strong, nonatomic) NSDictionary<NSString*, NSString*>* lettersNumber;
 @property (strong, nonatomic) NSMutableDictionary<NSString*, NSNumber*>* predictiveDictionary;
 
 @end
@@ -30,9 +31,17 @@
         self.enWordsSet = @{@2: @[@"A", @"B", @"C"], @3: @[@"D", @"E", @"F"], @4: @[@"G", @"H", @"I"], @5: @[@"J", @"K", @"L"],
                             @6: @[@"M", @"N", @"O"], @7: @[@"P", @"Q", @"R", @"S"], @8: @[@"T", @"U", @"V"], @9: @[@"W", @"X", @"Y", @"Z"]};
         
-        self.bgWordsSet = @{@3: @[@"А", @"Б", @"В", @"Г"], @4: @[@"Д", @"Е", @"Ж", @"З"], @5: @[@"М", @"Н", @"О", @"П"],
-                            @6: @[@"Р", @"С", @"Т", @"У"], @7: @[@"Ф", @"Х", @"Ц", @"Ч"], @8: @[@"Ш", @"Щ", @"Ъ"],
-                            @9: @[@"ьо", @"Ю", @"Я"]};
+        self.bgWordsSet = @{@2: @[@"А", @"Б", @"В", @"Г"], @3: @[@"Д", @"Е", @"Ж", @"З"], @4: @[@"И", @"Й", @"К", @"Л"],
+                            @5: @[@"М", @"Н", @"О", @"П"], @6: @[@"Р", @"С", @"Т", @"У"], @7: @[@"Ф", @"Х", @"Ц", @"Ч"],
+                            @8: @[@"Ш", @"Щ", @"Ъ"], @9: @[@"ьо", @"Ю", @"Я"]};
+        
+        self.lettersNumber = @{@"A": @"2", @"B": @"2", @"C": @"2", @"D": @"3", @"E": @"3", @"F": @"3", @"G": @"4", @"H": @"4",
+                               @"I": @"4", @"J": @"5", @"K": @"5", @"L": @"5", @"M": @"6", @"N": @"6", @"O": @"6", @"P": @"7",
+                               @"Q": @"7", @"R": @"7", @"S": @"7", @"T": @"8", @"U": @"8", @"V": @"8", @"W": @"9", @"X": @"9",
+                               @"Y": @"9", @"Z": @"9", @"А": @"2", @"Б": @"2", @"Ц": @"7", @"Д": @"3", @"Е": @"3", @"Ф": @"7",
+                               @"Г": @"2", @"Х": @"7", @"И": @"4", @"Й": @"4", @"К": @"4", @"Л": @"4", @"М": @"5", @"Н": @"5",
+                               @"О": @"5", @"П": @"5", @"Я": @"9", @"Р": @"6", @"С": @"6", @"Т": @"6", @"У": @"6", @"Ж": @"3",
+                               @"В": @"2", @"З": @"3"};
         
         [self loadPredictDictionary];
     }
@@ -80,8 +89,31 @@
     return self.bgWordsSet;
 }
 
+-(NSString*)numbersWithLetters:(NSString*)stringInput
+{
+    NSMutableString* numberInput = [[NSMutableString alloc] init];
+    
+    for (int i = 0; i < stringInput.length; ++i)
+    {
+        NSString* letter = [stringInput substringWithRange:NSMakeRange(i, 1)];
+        
+        if ([self.lettersNumber objectForKey:letter])
+        {
+            [numberInput appendString:[self.lettersNumber objectForKey:letter]];
+        }
+        else
+        {
+            [numberInput appendString:letter];
+        }
+    }
+    
+    return numberInput;
+}
+
 -(NSArray<NSString*>*)predictWordsStartedWith:(NSString*)stringInput
 {
+    stringInput = [self numbersWithLetters:stringInput];
+    
     NSMutableArray<NSString*>* words = [NSMutableArray arrayWithArray:[self.dictionary allKeys]];
     
     for (int i = 0; i < stringInput.length; ++i)
@@ -106,7 +138,6 @@
         
         [words filterUsingPredicate:filterWords];
     }
-    //if words is empty check for near words
     
     if ([self.predictiveDictionary count] != 0)
     {
